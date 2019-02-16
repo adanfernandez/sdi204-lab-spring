@@ -1,23 +1,25 @@
 package com.uniovi.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.uniovi.entities.Mark;
+import org.springframework.web.bind.annotation.*;
+import com.uniovi.entities.*;
 import com.uniovi.services.MarksService;
+import com.uniovi.services.UsersService;
 
 @Controller
-public class MarksControllers {
-
+public class MarksController {
 	@Autowired // Inyectar el servicio
 	private MarksService marksService;
+	@Autowired
+	private UsersService usersService;
+
+	@RequestMapping("/mark/list/update")
+	public String updateList(Model model) {
+		model.addAttribute("markList", marksService.getMarks());
+		return "mark/list :: tableMarks";
+	}
 
 	@RequestMapping("/mark/list")
 	public String getList(Model model) {
@@ -44,27 +46,25 @@ public class MarksControllers {
 	}
 
 	@RequestMapping(value = "/mark/add")
-	public String getMark() {
+	public String getMark(Model model) {
+		model.addAttribute("usersList", usersService.getUsers());
 		return "mark/add";
 	}
 
 	@RequestMapping(value = "/mark/edit/{id}")
 	public String getEdit(Model model, @PathVariable Long id) {
 		model.addAttribute("mark", marksService.getMark(id));
+		model.addAttribute("usersList", usersService.getUsers());
 		return "mark/edit";
 	}
 
 	@RequestMapping(value = "/mark/edit/{id}", method = RequestMethod.POST)
 	public String setEdit(Model model, @PathVariable Long id, @ModelAttribute Mark mark) {
-		mark.setId(id);
-		marksService.addMark(mark);
+		Mark original = marksService.getMark(id);
+// modificar solo score y description
+		original.setScore(mark.getScore());
+		original.setDescription(mark.getDescription());
+		marksService.addMark(original);
 		return "redirect:/mark/details/" + id;
 	}
-
-	@RequestMapping("/mark/list/update")
-	public String updateList(Model model) {
-		model.addAttribute("markList", marksService.getMarks());
-		return "mark/list :: tableMarks";
-	}
-
 }
