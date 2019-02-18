@@ -39,7 +39,6 @@ public class UsersController {
 
 	@RequestMapping(value = "/user/add", method = RequestMethod.POST)
 	public String setUser(@ModelAttribute User user) {
-		System.out.println(user.toString());
 		usersService.addUser(user);
 		return "redirect:/user/list";
 	}
