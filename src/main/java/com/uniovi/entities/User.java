@@ -90,7 +90,11 @@ public class User {
 	public void setPasswordConfirm(String passwordConfirm) {
 		this.passwordConfirm = passwordConfirm;
 	}
-	
+
+	public boolean tieneNotas() {
+		return marks.size() != 0;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", dni=" + dni + ", name=" + name + ", lastName=" + lastName + ", role=" + role

@@ -2,11 +2,11 @@
 <html lang="en">
 <head th:replace="fragments/head" />
 <body>
-	<!-- Barra de Navegación superior -->
+	<!-- Barra de NavegaciÃ³n superior -->
 	<nav th:replace="fragments/nav" />
 	<div class="container">
-		<h2>Agregar usuario</h2>
-		<form class="form-horizontal" method="post" action="/user/add">
+		<h2 th:text="#{adduser.meanmessage}"></h2>
+		<form class="form-horizontal" method="post" action="/user/add" >
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="dni">DNI:</label>
 				<div class="col-sm-10">
@@ -15,37 +15,36 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="name">Nombre:</label>
+				<label class="control-label col-sm-2" for="name"><span th:text="#{adduser.name}"></span></label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="name"
 						placeholder="Ejemplo: Juan" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="lastName">Apellidos:</label>
+				<label class="control-label col-sm-2" for="lastName"><span th:text="#{adduser.surname}"></span></label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="lastName"
-						placeholder="Ejemplo: Peréz Almonte" required="true" />
+						placeholder="Ejemplo: PÃ©rez Almonte" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="password">Password:</label>
+				<label class="control-label col-sm-2" for="password"><span th:text="#{adduser.password}"></span></label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" name="password"
-						placeholder="Entre el Password" />
+						th:placeholder="#{password.introduce}" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="passwordConfirm">Repita
-					el Password:</label>
+				<label class="control-label col-sm-2" for="passwordConfirm"><span th:text="#{adduser.repeatpassword}"></span></label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" name="passwordConfirm"
-						placeholder="Repita el Password" />
+						th:placeholder="#{password.introduce}" />
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary">Enviar</button>
+					<button type="submit" class="btn btn-primary" th:text="#{adduser.meanmessage}"></button>
 				</div>
 			</div>
 		</form>
