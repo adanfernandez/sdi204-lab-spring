@@ -6,7 +6,23 @@
 	<nav th:replace="fragments/nav" />
 	<div class="container">
 		<h2 th:text="#{adduser.meanmessage}"></h2>
-		<form class="form-horizontal" method="post" action="/user/add" >
+		<form class="form-horizontal" method="post" action="/user/add">
+
+
+
+			<div class="form-group">
+				<label class="control-label col-sm-2" for=”role”>Role:</label>
+				<div class="col-sm-10">
+					<select id="role" class="form-control" name="role">
+						<option th:each="role : ${rolesList}" th:value="${role}"
+							th:text="${role}"></option>
+					</select>
+				</div>
+			</div>
+
+
+
+
 			<div class="form-group">
 				<label class="control-label col-sm-2" for="dni">DNI:</label>
 				<div class="col-sm-10">
@@ -15,28 +31,32 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="name"><span th:text="#{adduser.name}"></span></label>
+				<label class="control-label col-sm-2" for="name"><span
+					th:text="#{adduser.name}"></span></label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="name"
 						placeholder="Ejemplo: Juan" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="lastName"><span th:text="#{adduser.surname}"></span></label>
+				<label class="control-label col-sm-2" for="lastName"><span
+					th:text="#{adduser.surname}"></span></label>
 				<div class="col-sm-10">
 					<input type="text" class="form-control" name="lastName"
 						placeholder="Ejemplo: Pérez Almonte" required="true" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="password"><span th:text="#{adduser.password}"></span></label>
+				<label class="control-label col-sm-2" for="password"><span
+					th:text="#{adduser.password}"></span></label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" name="password"
 						th:placeholder="#{password.introduce}" />
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-sm-2" for="passwordConfirm"><span th:text="#{adduser.repeatpassword}"></span></label>
+				<label class="control-label col-sm-2" for="passwordConfirm"><span
+					th:text="#{adduser.repeatpassword}"></span></label>
 				<div class="col-sm-10">
 					<input type="password" class="form-control" name="passwordConfirm"
 						th:placeholder="#{password.introduce}" />
@@ -44,7 +64,8 @@
 			</div>
 			<div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
-					<button type="submit" class="btn btn-primary" th:text="#{adduser.meanmessage}"></button>
+					<button type="submit" class="btn btn-primary"
+						th:text="#{adduser.meanmessage}"></button>
 				</div>
 			</div>
 		</form>

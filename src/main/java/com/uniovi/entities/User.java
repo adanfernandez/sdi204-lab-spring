@@ -95,6 +95,14 @@ public class User {
 		return marks.size() != 0;
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", dni=" + dni + ", name=" + name + ", lastName=" + lastName + ", role=" + role
