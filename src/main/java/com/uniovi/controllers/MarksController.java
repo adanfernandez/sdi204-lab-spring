@@ -1,5 +1,7 @@
 package com.uniovi.controllers;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,10 +12,15 @@ import com.uniovi.services.UsersService;
 
 @Controller
 public class MarksController {
+
 	@Autowired // Inyectar el servicio
 	private MarksService marksService;
+
 	@Autowired
 	private UsersService usersService;
+
+	@Autowired
+	private HttpSession httpSession;
 
 	@RequestMapping("/mark/list/update")
 	public String updateList(Model model) {

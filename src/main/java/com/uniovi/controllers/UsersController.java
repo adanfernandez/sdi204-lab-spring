@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import com.uniovi.entities.*;
 import com.uniovi.services.SecurityService;
 import com.uniovi.services.UsersService;
+import com.uniovi.validators.LoginValidator;
 import com.uniovi.validators.SignUpFormValidator;
 
 @Controller
@@ -24,6 +25,9 @@ public class UsersController {
 
 	@Autowired
 	private SignUpFormValidator signUpFormValidator;
+	
+	@Autowired
+	private LoginValidator loginValidator;
 
 	@RequestMapping("/user/list")
 	public String getListado(Model model) {
