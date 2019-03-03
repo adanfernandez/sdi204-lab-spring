@@ -3,15 +3,18 @@ package com.uniovi.tests;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import com.uniovi.tests.pageobjects.PO_HomeView;
+import com.uniovi.tests.pageobjects.PO_LoginView;
 import com.uniovi.tests.pageobjects.PO_Properties;
 import com.uniovi.tests.pageobjects.PO_RegisterView;
 import com.uniovi.tests.pageobjects.PO_View;
@@ -84,10 +87,10 @@ public class NotaneitorTests {
 	}
 
 	public void initdb() {
-		//Borramos todas las entidades.
+		// Borramos todas las entidades.
 		usersRepository.deleteAll();
-		
-		//Ahora las volvemos a crear
+
+		// Ahora las volvemos a crear
 		User user1 = new User("99999990A", "Pedro", "Díaz");
 		user1.setPassword("123456");
 		user1.setRole(rolesService.getRoles()[0]);
@@ -107,21 +110,22 @@ public class NotaneitorTests {
 		user6.setPassword("123456");
 		user6.setRole(rolesService.getRoles()[2]);
 		Set<Mark> user1Marks = new HashSet<Mark>();
-		for(int i = 1; i <5; i++)
-		 user1Marks.add(new Mark("Nota A"+String.valueOf(i), i*1.0, user1));
+		for (int i = 1; i < 5; i++)
+			user1Marks.add(new Mark("Nota A" + String.valueOf(i), i * 1.0, user1));
 		user1.setMarks(user1Marks);
 		Set<Mark> user2Marks = new HashSet<Mark>();
-		for(int i = 1; i <5; i++)
-		 user2Marks.add(new Mark("Nota A"+String.valueOf(i), i*1.0, user2));
+		for (int i = 1; i < 5; i++)
+			user2Marks.add(new Mark("Nota A" + String.valueOf(i), i * 1.0, user2));
 		user2.setMarks(user2Marks);
 		Set<Mark> user3Marks = new HashSet<Mark>();
-		for(int i = 1; i <8; i++)
-		 user3Marks.add(new Mark("Nota A"+String.valueOf(i), i*1.0, user3));
+		for (int i = 1; i < 8; i++)
+			user3Marks.add(new Mark("Nota A" + String.valueOf(i), i * 1.0, user3));
 		user3.setMarks(user3Marks);
 		Set<Mark> user4Marks = new HashSet<Mark>();
-		for(int i = 1; i <15; i++)
-		 user4Marks.add(new Mark("Nota A"+String.valueOf(i), i*1.0, user4));
-		//OJO que la prueba 15 que trata de borrar esta nota no siempre la encuentra en la última página
+		for (int i = 1; i < 15; i++)
+			user4Marks.add(new Mark("Nota A" + String.valueOf(i), i * 1.0, user4));
+		// OJO que la prueba 15 que trata de borrar esta nota no siempre la encuentra en
+		// la última página
 		user4Marks.add(new Mark("Nota Nueva 1", 9.0, user4));
 		user4.setMarks(user4Marks);
 		usersService.addUser(user1);
@@ -130,7 +134,7 @@ public class NotaneitorTests {
 		usersService.addUser(user4);
 		usersService.addUser(user5);
 		usersService.addUser(user6);
-		}
+	}
 
 	// PR01. Acceder a la página principal /
 	@Test
@@ -189,4 +193,71 @@ public class NotaneitorTests {
 		// Rellenamos el formulario.
 		PO_RegisterView.fillForm(driver, "99999990B", "Josefo", "Per", "77777", "77777");
 	}
+
+	// PR07. Loguearse con exito desde el ROl de Usuario, 99999990D, 123456
+	@Test
+	public void PR07() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990A", "123456");
+		// Comprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+
+	// PR08: Identificación válida con usuario de ROL profesor ( 99999993D/123456)
+	@Test
+	public void PR08() {
+		// Vamos al formulario de logueo:
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario y nos logueamos como profesor
+		PO_LoginView.fillForm(driver, "99999993D", "123456");
+		// Comprobamos que entramos en la pagina del profesor, que puede añadir notas.
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		// Pinchamos en la opción de menu de Notas: //li[contains(@id, 'marks-menu')]/a
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'marks-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'mark/add')]");
+	}
+
+	// PR09: Identificación válida con usuario de ROL administrador
+	// (99999988F/123456).
+	@Test
+	public void PR09() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999988F", "123456");
+		// COmprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+		List<WebElement> elementos = PO_View.checkElement(driver, "free", "//li[contains(@id, 'users-menu')]/a");
+		elementos.get(0).click();
+		elementos = PO_View.checkElement(driver, "free", "//a[contains(@href, 'user/add')]");
+	}
+
+	// PR10: Identificación válida con usuario de ROL alumno
+	// (99999990A/123456).
+	@Test
+	public void PR10() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990A", "123456");
+		// Comprobamos que entramos en la pagina privada de Alumno
+		PO_View.checkElement(driver, "text", "Notas del usuario");
+	}
+	
+	// PR11: Identificación válida y desconexión con usuario de ROL usuario
+	//(99999990A/123456).
+	@Test
+	public void PR11() {
+		// Vamos al formulario de logueo.
+		PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+		// Rellenamos el formulario
+		PO_LoginView.fillForm(driver, "99999990A", "123456");
+		// Nos desconectamos
+		PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+		PO_View.checkElement(driver, "text", "Identifícate");
+	}
+	
 }
